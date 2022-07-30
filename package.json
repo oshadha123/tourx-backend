@@ -1,17 +1,28 @@
 {
-  "name": "tourx-backend",
+  "name": "tourx_backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "TourX Backend",
+  "main": "app.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon app.js"
   },
-  "author": "",
+  "author": "TourX",
   "license": "ISC",
+  "engines": {
+    "node": "16.x"
+  },
   "dependencies": {
-    "express": "^4.18.1"
+    "bcrypt": "^5.0.1",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "date-fns": "^2.23.0",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mysql": "^2.18.1"
+    
   },
   "devDependencies": {
-    "nodemon": "^2.0.19"
+    "nodemon": "^2.0.12"
   }
 }
