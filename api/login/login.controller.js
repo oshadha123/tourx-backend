@@ -1,15 +1,18 @@
 const {
-    getUserByUserEmail
-    
+  searchDbForEmailPassword,
+  getUserDetails
   } = require("./login.service");
-  const { hashSync, genSaltSync, compareSync } = require("bcrypt");
-  const { sign } = require("jsonwebtoken");
+
+const crypto = require("crypto");
+const { sign } = require("jsonwebtoken");
   
   module.exports = {
-    
     login: (req, res) => {
       const body = req.body;
-      getUserByUserEmail(body.email, (err, results) => {
+      body.email = crypto.createHash('md5').update(body.email.toLowerCase()).digest('hex');
+      body.password = crypto.createHash('md5').update(body.password).digest('hex');
+
+      searchDbForEmailPassword(body.email, body.password,  (err, results) => {
         if (err) {
           console.log(err);
         }
@@ -19,25 +22,27 @@ const {
             data: "Invalid email or password"
           });
         }
-        const result = compareSync(body.password, results.password);
-        if (result) {
-          results.password = undefined;
-          const jsontoken = sign({ result: results }, "qwe1234", {
-            expiresIn: "1h"
-          });
-          return res.json({
-            success: 1,
-            message: "login successfully",
-            token: jsontoken
-          });
-        } else {
-          return res.json({
-            success: 0,
-            data: "Invalid email or password"
-          });
-        }
+        // const result = compareSync(body.password, results.password);
+        // if (!result) {
+        //   return res.json({
+        //     success: 0,
+        //     data: "Invalid email or password"
+        //   });
+        // }
+        const userRole = results.roleId;
+        getUserDetails(results.userId, userRole, (err,results) => {
+            const jsontoken = sign({ result: results },process.env.JWT_KEY, {
+              expiresIn: "1h"
+            });
+            return res.json({
+              success: 1,
+              message: "login successfully",
+              firstName :results.firstName,
+              lastName :results.lastName,
+              role : userRole,
+              token: jsontoken
+            });
+        });
       });
     }
-    
   };
-  

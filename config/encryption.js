@@ -4,7 +4,7 @@ const algorithm = "aes-256-cbc";
 const initVectorString = process.env.IV; 
 const SecuritykeyString = process.env.SECURITY_KEY;
 const initVector = Buffer.from(initVectorString, "hex");  
-const Securitykey = Buffer.from(SecurityKeyString, "hex");
+const Securitykey = Buffer.from(SecuritykeyString, "hex");
 
 module.exports = {
     encrypt: function(text) {
