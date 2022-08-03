@@ -30,6 +30,7 @@ const { sign } = require("jsonwebtoken");
         //   });
         // }
         const userRole = results.roleId;
+        const verified = results.verificationStatus;
         getUserDetails(results.userId, userRole, (err,results) => {
             const jsontoken = sign({ result: results },process.env.JWT_KEY, {
               expiresIn: "1h"
@@ -40,6 +41,7 @@ const { sign } = require("jsonwebtoken");
               firstName :results.firstName,
               lastName :results.lastName,
               role : userRole,
+              verified : verified,
               token: jsontoken
             });
         });
