@@ -40,6 +40,7 @@ const { sign } = require("jsonwebtoken");
               message: "login successfully",
               firstName :results.firstName,
               lastName :results.lastName,
+              profile:results.profilePicture,
               role : userRole,
               verified : verified,
               token: jsontoken
