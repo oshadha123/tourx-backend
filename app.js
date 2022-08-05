@@ -1,15 +1,15 @@
 require("dotenv").config();
 const express = require("express");
+const cors = require("cors")
 const app = express();
-const userRouter = require("./api/login/login.router");
-//const userRegister = require("./api/register/register.router");
+app.use(cors())
+// const userRouter = require("./api/users/user.router");
+const loginRouter = require("./api/login/login.router");
 
 app.use(express.json());
 
-app.use("/api/v1/login", userRouter);
-//app.use("/api/v1/register", userRegister);
-
-const port = process.env.PORT || 4000;
+app.use("/api/v1", loginRouter);
+const port = process.env.PORT || 8080;
 app.listen(port, () => {
   console.log("server up and running on PORT :", port);
 });
