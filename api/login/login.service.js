@@ -19,9 +19,9 @@ module.exports = {
       case 1:
         query = "SELECT * FROM `admin` WHERE userId = ?";break;
       case 2:
-        query = "SELECT * FROM `tourist` WHERE userId = ?";break;
-      case 3:
         query = "SELECT * FROM `tourguide` WHERE userId = ?";break;
+      case 3:
+        query = "SELECT * FROM `tourist` WHERE userId = ?";break;
       default:
         return
     }
