@@ -59,7 +59,7 @@ module.exports = {
                             });
                         }
                         return res.json({
-                            success: 0,
+                            success: 1,
                             data: "Success. New user successfully registered."
                         });
                     });
@@ -98,7 +98,7 @@ module.exports = {
                 }
                 console.log(results)
                 return res.json({
-                    success: 0,
+                    success: 1,
                     data: "Success. User Successfully Verified."
                 });
             });
