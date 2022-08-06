@@ -2,11 +2,12 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const userRouter = require("./api/login/login.router");
-//const userRegister = require("./api/register/register.router");
+const userRegister = require("./api/register/register.router");
 
 app.use(express.json());
 
 app.use("/api/v1/login", userRouter);
+app.use("/api/v1/register", userRegister);
 //app.use("/api/v1/register", userRegister);
 
 const port = process.env.PORT || 4000;

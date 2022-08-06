@@ -19,4 +19,10 @@ module.exports = {
         decryptedData += decipher.final("utf8");
         return decryptedData;
     },
+    mailHash:function(text){
+        return crypto.createHash('md5').update(text.toLowerCase()).digest('hex');
+    },
+    hash:function(text){
+        return crypto.createHash('md5').update(text).digest('hex');
+    }
 };
