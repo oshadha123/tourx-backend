@@ -13,5 +13,18 @@ module.exports = {
         return callBack(null, results);
       }
     );
+  },
+  getYourToursDetails: (tourGuideId,callBack) => {
+    pool.query(
+      `select * from touristattraction join photo on touristattraction.attractionId=photo.attractionId where tourGuideId=?;`,
+      [tourGuideId],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        return callBack(null, results);
+      }
+    );
   }
+
 };
