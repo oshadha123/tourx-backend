@@ -5,7 +5,7 @@ const app = express();
 app.use(cors())
 // const userRouter = require("./api/users/user.router");
 const loginRouter = require("./api/login/login.router");
-const getLeaderBoard = require("./api/tourguide/tourguide.profile.router")
+const getLeaderBoard = require("./api/tourguide/tourguide.home.router")
 app.use(express.json());
 
 app.use("/api/v1", loginRouter);

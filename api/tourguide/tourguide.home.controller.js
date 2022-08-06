@@ -5,7 +5,7 @@ const {
     getUsers,
     updateUser,
     deleteUser
-  } = require("./tourguide.profile.service");
+  } = require("./tourguide.home.service");
   const { sign } = require("jsonwebtoken");
   
   module.exports = {

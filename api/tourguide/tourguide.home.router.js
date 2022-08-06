@@ -4,7 +4,7 @@ const {
  
   getLeaderboard
  
-} = require("./tourguide.profile.controller");
+} = require("./tourguide.home.controller");
 
 router.get("/leaderboard", checkToken, getLeaderboard);
 
