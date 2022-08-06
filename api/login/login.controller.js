@@ -22,13 +22,6 @@ const { sign } = require("jsonwebtoken");
             data: "Invalid email or password"
           });
         }
-        // const result = compareSync(body.password, results.password);
-        // if (!result) {
-        //   return res.json({
-        //     success: 0,
-        //     data: "Invalid email or password"
-        //   });
-        // }
         const userRole = results.roleId;
         const verified = results.verificationStatus;
         getUserDetails(results.userId, userRole, (err,results) => {
@@ -42,6 +35,7 @@ const { sign } = require("jsonwebtoken");
               lastName :results.lastName,
               profile:results.profilePicture,
               userId:results.userId,
+              profilePicture : results.profilePicture,
               role : userRole,
               verified : verified,
               token: jsontoken
