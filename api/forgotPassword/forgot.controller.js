@@ -1,4 +1,4 @@
-const { mailHash,decrypt } = require("../../config/encryption");
+const { mailHash,decrypt,hash } = require("../../config/encryption");
 const client = require("../../config/mail");
 
 const {
@@ -6,7 +6,9 @@ const {
     addRecord,
     getOtp,
     updateValidity,
-    searchEmail
+    searchEmail,
+    updatePassword,
+    checkPassword
 } = require("./forgot.service");
 
 module.exports = {
@@ -49,9 +51,91 @@ module.exports = {
     },
     resetPassword: (req, res) => {
         const body = req.body;
-
+        const userId = body.userId;
+        const roleId = body.roleId;
+        var oldPassword =  body.oldPassword;
+        var newPassword = body.newPassword;
+        checkPassword(userId,roleId,oldPassword,(err, results)=>{
+            if (err) {
+                console.log(err);
+            }
+            if (! results) {
+                return res.json({
+                    success: 0,
+                    data: "error, Old password is wrong."
+                });
+            }
+            newPassword = hash(newPassword);
+            updatePassword(userId,roleId,newPassword,(err, results) => {
+                if (err) {
+                    console.log(err);
+                }
+                if (! results) {
+                    return res.json({
+                        success: 0,
+                        data: "error, Something went wrong."
+                    });
+                }
+                return res.json({
+                    success: 1,
+                    data: "Password reset successfully."
+                });
+            });
+        });
     },
-    checkValidity: (req, res) => {
-
+    updatePassword: (req, res) => {
+        const body = req.body;
+        const otp = body.otp;
+        var newPassword = body.newPassword;
+        const email = body.email;
+        const hashedEmail = mailHash(email);
+        getOtp(hashedEmail, otp, (err, results) =>{
+            if (err) {
+                console.log(err);
+            }
+            if (! results) {
+                return res.json({
+                    success: 0,
+                    data: "error, Something went wrong."
+                });
+            }
+            searchEmail(hashedEmail, (err, results) =>{
+                if (err) {
+                    console.log(err);
+                }
+                if (! results) {
+                    return res.json({
+                        success: 0,
+                        data: "error, Something went wrong."
+                    });
+                }
+                newPassword = hash(newPassword);
+                updatePassword(results.userId,results.roleId,newPassword,(err, results) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    if (! results) {
+                        return res.json({
+                            success: 0,
+                            data: "error, Something went wrong."
+                        });
+                    }
+                    return res.json({
+                        success: 1,
+                        data: "Password reset successfully."
+                    });
+                });
+                client.sendMail({
+                    from: 'tourxproject@gmail.com',
+                    to: email,
+                    subject: 'Password Reset Confirmation',
+                    text: 'The password has been reset successfully.'
+                })
+                return res.json({
+                    success: 1,
+                    data: "Password reset successfully."
+                });
+            });
+        });
     }
 }
