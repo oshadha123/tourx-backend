@@ -4,11 +4,11 @@ const { checkToken } = require("../../auth/token_validation");
 const {
   resetPasswordWithoutLogin,
   resetPassword,
-  updatePassword
+  changePassword
 } = require("./forgot.controller");
 
 router.post("/forgot", resetPasswordWithoutLogin);
-router.patch("/forgot",updatePassword);
+router.patch("/forgot",changePassword);
 router.patch("/forgot/loggedIn", checkToken, resetPassword);
 
 module.exports = router;

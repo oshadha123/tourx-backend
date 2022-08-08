@@ -53,12 +53,12 @@ module.exports = {
         const body = req.body;
         const userId = body.userId;
         const roleId = body.roleId;
-        var oldPassword =  body.oldPassword;
-        var newPassword = body.newPassword;
+        var oldPassword =  body.oldPassword.toString();
+        var newPassword = body.newPassword.toString();
         checkPassword(userId,roleId,oldPassword,(err, results)=>{
             if (err) {
                 console.log(err);
-            }
+            } 
             if (! results) {
                 return res.json({
                     success: 0,
@@ -70,7 +70,7 @@ module.exports = {
                 if (err) {
                     console.log(err);
                 }
-                if (! results) {
+                if (! results.changedRows) {
                     return res.json({
                         success: 0,
                         data: "error, Something went wrong."
@@ -83,7 +83,7 @@ module.exports = {
             });
         });
     },
-    updatePassword: (req, res) => {
+    changePassword: (req, res) => {
         const body = req.body;
         const otp = body.otp;
         var newPassword = body.newPassword;
@@ -99,6 +99,7 @@ module.exports = {
                     data: "error, Something went wrong."
                 });
             }
+            const recordId = results.recordId;
             searchEmail(hashedEmail, (err, results) =>{
                 if (err) {
                     console.log(err);
@@ -114,26 +115,24 @@ module.exports = {
                     if (err) {
                         console.log(err);
                     }
-                    if (! results) {
+                    console.log(results)
+                    if (! results.changedRows) {
                         return res.json({
                             success: 0,
                             data: "error, Something went wrong."
                         });
                     }
+                    client.sendMail({
+                        from: 'tourxproject@gmail.com',
+                        to: email,
+                        subject: 'Password Reset Confirmation',
+                        text: 'The password has been reset successfully.'
+                    })
+                    updateValidity(recordId);
                     return res.json({
                         success: 1,
                         data: "Password reset successfully."
                     });
-                });
-                client.sendMail({
-                    from: 'tourxproject@gmail.com',
-                    to: email,
-                    subject: 'Password Reset Confirmation',
-                    text: 'The password has been reset successfully.'
-                })
-                return res.json({
-                    success: 1,
-                    data: "Password reset successfully."
                 });
             });
         });

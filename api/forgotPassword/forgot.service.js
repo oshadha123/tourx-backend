@@ -75,13 +75,13 @@ module.exports = {
     },
     updatePassword:(userId,roleId,newPassword,callBack) => {
         pool.query(
-            "UPDATE `login` SET password=? WHERE userId  = ? AND roleId = ?",
+            "UPDATE `login` SET `password`=? WHERE userId  = ? AND roleId = ?",
             [newPassword,userId,roleId],
             (error, results, fields) => {
               if (error) {
                 callBack(error);
               }
-              return callBack(null, 1);
+              return callBack(null, results);
             }
         );
     }
