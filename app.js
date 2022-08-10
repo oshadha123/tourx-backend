@@ -8,6 +8,7 @@ const userRegister = require("./api/register/register.router");
 const forgotRouter = require("./api/forgotPassword/forgot.router");
 const getLeaderBoard = require("./api/tourguide/tourguide.home.router")
 const getYourTours = require('./api/tourguide/tourguide.home.router')
+const touristRoutes = require('./api/tourist/tourist.router')
 
 app.use(cors())
 app.use(express.json());
@@ -17,7 +18,7 @@ app.use("/api/v1", loginRouter);
 app.use("/api/v1",getLeaderBoard);
 app.use("/api/v1",getYourTours);
 app.use("/api/v1",forgotRouter);
-//app.use("/api/v1/register", userRegister);
+app.use("/api/v1", touristRoutes);
 
 
 const port = process.env.PORT || 4000;
