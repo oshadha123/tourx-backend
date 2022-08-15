@@ -25,7 +25,7 @@ const { sign } = require("jsonwebtoken");
         const userRole = results.roleId;
         const verified = results.verificationStatus;
         getUserDetails(results.userId, userRole, (err,results) => {
-            const jsontoken = sign({ result: results },process.env.JWT_KEY, {
+            const jsontoken = sign({ userId: results.userId, role : userRole },process.env.JWT_KEY, {
               expiresIn: "1h"
             });
             return res.json({
