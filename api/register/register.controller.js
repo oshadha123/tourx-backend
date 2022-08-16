@@ -18,7 +18,7 @@ module.exports = {
             if (err) {
                 console.log(err);
             }
-            if (! results) {
+            if (results) {
                 return res.json({
                     success: 0,
                     data: "error, email already exists."
@@ -28,7 +28,7 @@ module.exports = {
                 if (err) {
                     console.log(err);
                 }
-                if (! results) {
+                if (! results) { 
                     return res.json({
                         success: 0,
                         data: "error, something went wrong when user registration."
