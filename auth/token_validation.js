@@ -35,7 +35,7 @@ module.exports = {
             message: "Invalid Token..."
           });
         } else {
-          if(decoded.userId != 3){
+          if(decoded.role != 3){
             return res.json({
               success: 0,
               message: "Access Denied! Unauthorized User"
@@ -64,7 +64,7 @@ module.exports = {
             message: "Invalid Token..."
           });
         } else {
-          if(decoded.userId != 1){
+          if(decoded.role != 1){
             return res.json({
               success: 0,
               message: "Access Denied! Unauthorized User"
@@ -93,7 +93,7 @@ module.exports = {
             message: "Invalid Token..."
           });
         } else {
-          if(decoded.userId != 2){
+          if(decoded.role != 2){
             return res.json({
               success: 0,
               message: "Access Denied! Unauthorized User"
