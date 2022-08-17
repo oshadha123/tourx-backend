@@ -16,7 +16,7 @@ module.exports = {
   },
   getYourToursDetails: (tourGuideId,callBack) => {
     pool.query(
-      `select * from touristattraction join photo on touristattraction.attractionId=photo.attractionId where tourGuideId=?;`,
+      `select * from touristattraction join photo on touristattraction.attractionId=photo.attractionId join tour on tour.tourId=photo.tourId join village on village.villageId=touristattraction.villageId where tourGuideId=?;`,
       [tourGuideId],
       (error, results, fields) => {
         if (error) {

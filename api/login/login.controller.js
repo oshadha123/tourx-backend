@@ -36,6 +36,8 @@ const { sign } = require("jsonwebtoken");
               profile:results.profilePicture,
               userId:results.userId,
               profilePicture : results.profilePicture,
+              points:results.points,
+              contact:results.contactNumber,
               role : userRole,
               verified : verified,
               token: jsontoken
