@@ -6,7 +6,6 @@ const {
   const { sign } = require("jsonwebtoken");
   
   module.exports = {
-    
     getLeaderboard: (req, res) => {
       getUsers((err, results) => {
         if (err) {

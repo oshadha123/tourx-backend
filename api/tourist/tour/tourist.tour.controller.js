@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const {
-    getTours, getAllTours
+    getTours, getPhoto
 } = require("./tourist.tour.service");
 
 module.exports = {
@@ -19,7 +19,24 @@ module.exports = {
                         data: "error, something went wrong."
                     });
                 }
-                return res.json(results)
+                var itemsProcessed = {count:1};
+                results.forEach((item, index, results) => {
+                    console.log(item)
+                    getPhoto(item.tourId, results, itemsProcessed, (err, result) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        if (!result) {
+                            return res.json({
+                                success: 0,
+                                data: "error, something went wrong."
+                            });
+                        }
+                        results[index].coverPhoto = result[0].path
+                    },(err, results) => {
+                        return res.json(results)
+                    });
+                });
             });
         })
     },
