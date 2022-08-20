@@ -1,11 +1,11 @@
 const router = require("express").Router();
 
-// const { checkTourist } = require("../../../auth/token_validation");
-// const {getTours,getToursByLocation} = require("./tourist.tour.controller");
+// const { getTourGuide } = require("../../../auth/token_validation");
+const {getTourGuide} = require("./tourist.tourGuide.controller");
 
 
 // //router.post("/", register);
 // router.get("/tour",checkTourist, getTours);
-// router.get("/tour/:location", getToursByLocation);
+router.get("/tourguide", getTourGuide);
 
 module.exports = router;
