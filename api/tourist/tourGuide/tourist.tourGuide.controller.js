@@ -1,8 +1,28 @@
+const {
+    getAllGuides
+} = require("./tourist.tourGuide.service");
+
 module.exports = {
-    getTours: (req, res) => {
-        return res.json({
-            success: 0,
-            data: "teet 2"
-        });
+    getTourGuide: (req, res) => {
+        getAllGuides((err, results) => {
+            if (err) {
+                console.log(err);
+            }
+            if (!results) {
+                return res.json({
+                    success: 0,
+                    data: "error, something went wrong."
+                });
+            }
+            results.shift();
+            var data = []
+            results[0].forEach(element => {
+                data.push(element)
+            });
+            return res.json({
+                success: 0,
+                data: data
+            });
+        })
     }
 }
