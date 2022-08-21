@@ -17,22 +17,42 @@ module.exports = {
     var query = "";
     switch (roleId) {
       case 1:
-        query = "INSERT INTO `admin`(firstName,lastName,profilePicture) VALUES (?,?,?)"; break;
+        query = "INSERT INTO `admin`(firstName,lastName,profilePicture) VALUES (?,?,?)"; 
+        pool.query(query, [firstName, lastName, profilePic],
+          (error, results, fields) => {
+            if (error) {
+              callBack(error);
+            }
+            return callBack(null, { userId: results.insertId });
+          }
+        );
+        break;
       case 3:
-        query = "INSERT INTO `tourist`(firstName,lastName,profilePicture) VALUES (?,?,?)"; break;
+        query = "INSERT INTO `tourist`(firstName,lastName,profilePicture) VALUES (?,?,?)";
+        pool.query(query, [firstName, lastName, profilePic],
+          (error, results, fields) => {
+            if (error) {
+              callBack(error);
+            }
+            return callBack(null, { userId: results.insertId });
+          }
+        );
+        break;
       case 2:
-        query = "INSERT INTO `tourguide`(firstName,lastName,profilePicture) VALUES (?,?,?)"; break;
+        query = "INSERT INTO `tourguide`(firstName,lastName,profilePicture) VALUES (?,?,?);SET @lastInsertId = (LAST_INSERT_ID());SET @lastBoard = (SELECT guideleaderboard.boardId FROM guideleaderboard ORDER BY guideleaderboard.startingDate DESC LIMIT 1);INSERT INTO guidehasleaderboard(userId, boardId, points) VALUES (@lastInsertId, @lastBoard, 0);SELECT @lastInsertId AS userId;";
+        pool.query(query, [firstName, lastName, profilePic],
+          (error, results, fields) => {
+            if (error) {
+              callBack(error);
+            }
+            return callBack(null, { userId: results[0].insertId });
+          }
+        );
+        break;
       default:
         callBack(error);
     }
-    pool.query(query, [firstName, lastName, profilePic],
-      (error, results, fields) => {
-        if (error) {
-          callBack(error);
-        }
-        return callBack(null, { userId: results.insertId });
-      }
-    );
+
   },
   saveOtp: (userId, roleId, otp, callBack) => {
     pool.query(
