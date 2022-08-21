@@ -1,5 +1,7 @@
 const client = require("../../config/mail");
 const encrypt = require("../../config/encryption");
+const crypto = require("crypto");
+const { sign } = require("jsonwebtoken");
 
 const {
     checkExistenceOfEmail,
@@ -9,6 +11,9 @@ const {
     getVerificationOTP,
     updateVerificationStatus
 } = require("./register.service");
+
+const {getUserDetails} = require("../login/login.service")
+
 
 module.exports = {
     signUp: (req, res) => {
@@ -34,6 +39,7 @@ module.exports = {
                         data: "error, something went wrong when user registration."
                     });
                 }
+                //console.log(results)
                 const userId = results.userId
                 const encryptedMail = encrypt.encrypt(body.email)
                 const password = encrypt.hash(body.password)
@@ -85,7 +91,6 @@ module.exports = {
                     data: "error, something went wrong. Check the inputs again."
                 });
             }
-            console.log(results)
             updateVerificationStatus(body.userId,body.roleId,(err, results) => {
                 if (err) {
                     console.log(err);
@@ -96,10 +101,22 @@ module.exports = {
                         data: "error, something went wrong."
                     });
                 }
-                console.log(results)
-                return res.json({
-                    success: 1,
-                    data: "Success. User Successfully Verified."
+                getUserDetails(body.userId,body.roleId, (err,results) => {
+                    const jsontoken = sign({ userId: results.userId, role : userRole },process.env.JWT_KEY, {
+                      expiresIn: "1h"
+                    });
+                    return res.json({
+                      success: 1,
+                      message: "Success. User Successfully Verified.",
+                      firstName :results.firstName,
+                      lastName :results.lastName,
+                      profile:results.profilePicture,
+                      userId:results.userId,
+                      profilePicture : results.profilePicture,
+                      role : userRole,
+                      verified : 1,
+                      token: jsontoken
+                    });
                 });
             });
         });
