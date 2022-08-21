@@ -1,6 +1,7 @@
 const {
   searchDbForEmailPassword,
-  getUserDetails
+  getUserDetails,
+  getUserContact
   } = require("./login.service");
 
 const crypto = require("crypto");
@@ -21,27 +22,53 @@ const { sign } = require("jsonwebtoken");
             success: 0,
             data: "Invalid email or password"
           });
-        }
+        } 
         const userRole = results.roleId;
         const verified = results.verificationStatus;
         getUserDetails(results.userId, userRole, (err,results) => {
-            const jsontoken = sign({ userId: results.userId, role : userRole },process.env.JWT_KEY, {
-              expiresIn: "1h"
-            });
-            return res.json({
-              success: 1,
-              message: "login successfully",
-              firstName :results.firstName,
-              lastName :results.lastName,
-              profile:results.profilePicture,
-              userId:results.userId,
-              profilePicture : results.profilePicture,
-              points:results.points,
-              contact:results.contactNumber,
-              role : userRole,
-              verified : verified,
-              token: jsontoken
-            });
+            getUserContact(results.userId, userRole,results,(err,result) => {
+              if (err) {
+                console.log(err);
+              }
+              if (!result) {
+                return res.json({
+                  success: 0,
+                  data: "Invalid email or password"
+                });
+              }
+              const jsontoken = sign({ userId: results.userId, role : userRole },process.env.JWT_KEY, {
+                expiresIn: "1h"
+              });
+              if (Object.keys(result).length === 0) {
+                return res.json({
+                  success: 1,
+                  message: "login successfully",
+                  firstName :results.firstName,
+                  lastName :results.lastName,
+                  userId:results.userId,
+                  profilePicture : results.profilePicture,
+                  points:results.points,
+                  role : userRole,
+                  verified : verified,
+                  token: jsontoken
+                });
+              }else{
+                return res.json({
+                  success: 1,
+                  message: "login successfully",
+                  firstName :results.firstName,
+                  lastName :results.lastName,
+                  userId:results.userId,
+                  profilePicture : results.profilePicture,
+                  points:results.points,
+                  contact: result[0].contactNumber,
+                  role : userRole,
+                  verified : verified,
+                  token: jsontoken
+                });
+              }
+
+            })
         });
       });
     }
