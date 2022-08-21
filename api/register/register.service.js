@@ -50,7 +50,7 @@ module.exports = {
         );
         break;
       default:
-        callBack(error);
+        callBack(1);
     }
 
   },

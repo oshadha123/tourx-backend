@@ -29,6 +29,9 @@ module.exports = {
                     data: "error, email already exists."
                 });
             }
+            if(body.profilePic==""){
+                body.profilePic = null;
+            }
             addNewUser(body.firstName, body.lastName, body.profilePic, body.roleId, (err, results) => {
                 if (err) {
                     console.log(err);

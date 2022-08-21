@@ -6,6 +6,6 @@ const {getTours,getToursByLocation} = require("./tourist.tour.controller");
 
 //router.post("/", register);
 router.get("/tour",checkTourist, getTours);
-router.get("/tour/:location", getToursByLocation);
+router.get("/tour/:location",checkTourist, getToursByLocation);
 
 module.exports = router;
