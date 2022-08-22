@@ -1,6 +1,6 @@
 const client = require("../../config/mail");
 const encrypt = require("../../config/encryption");
-const crypto = require("crypto");
+// const crypto = require("crypto");
 const { sign } = require("jsonwebtoken");
 
 const {
@@ -12,7 +12,7 @@ const {
     updateVerificationStatus
 } = require("./register.service");
 
-const {getUserDetails} = require("../login/login.service")
+// const {getUserDetails} = require("../login/login.service")
 
 
 module.exports = {
@@ -84,7 +84,8 @@ module.exports = {
     },
     verify:(req, res) => {
         const body = req.body;
-        getVerificationOTP(body.userId,body.roleId,body.otp,(err, results) => {
+        const hashEmail = encrypt.mailHash(body.email);
+        getVerificationOTP(hashEmail,body.otp,(err, results) => {
             if (err) {
                 console.log(err);
             }
@@ -94,7 +95,9 @@ module.exports = {
                     data: "error, something went wrong. Check the inputs again."
                 });
             }
-            updateVerificationStatus(body.userId,body.roleId,(err, results) => {
+            const userId = results.userId
+            const roleId = results.roleId
+            updateVerificationStatus(userId,roleId,(err, results) => {
                 if (err) {
                     console.log(err);
                 }
@@ -104,23 +107,26 @@ module.exports = {
                         data: "error, something went wrong."
                     });
                 }
-                getUserDetails(body.userId,body.roleId, (err,results) => {
-                    const jsontoken = sign({ userId: results.userId, role : userRole },process.env.JWT_KEY, {
-                      expiresIn: "1h"
-                    });
-                    return res.json({
-                      success: 1,
-                      message: "Success. User Successfully Verified.",
-                      firstName :results.firstName,
-                      lastName :results.lastName,
-                      profile:results.profilePicture,
-                      userId:results.userId,
-                      profilePicture : results.profilePicture,
-                      role : userRole,
-                      verified : 1,
-                      token: jsontoken
-                    });
-                });
+                return res.json({
+                    success: 1,
+                    data: "Success, user successfully verified."
+                }); 
+                // getUserDetails(userId,roleId, (err,results) => {
+                //     const jsontoken = sign({ userId: userId, role : roleId},process.env.JWT_KEY, {
+                //       expiresIn: "1h"
+                //     });
+                //     return res.json({
+                //       success: 1,
+                //       message: "Success. User Successfully Verified.",
+                //       firstName :results.firstName,
+                //       lastName :results.lastName,
+                //       profile:results.profilePicture,
+                //       userId:results.userId,
+                //       role : roleId,
+                //       verified : 1,
+                //       token: jsontoken
+                //     });
+                // });
             });
         });
     }
