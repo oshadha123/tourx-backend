@@ -26,7 +26,7 @@ module.exports = {
             return callBack(null, { userId: results.insertId });
           }
         );
-        break;
+        break; 
       case 3:
         query = "INSERT INTO `tourist`(firstName,lastName,profilePicture) VALUES (?,?,?)";
         pool.query(query, [firstName, lastName, profilePic],
@@ -78,10 +78,10 @@ module.exports = {
       }
     );
   },
-  getVerificationOTP:(userId,roleId,otp,callBack) => {
+  getVerificationOTP:(hashedEmail,otp,callBack) => {
     pool.query(
-      "SELECT * FROM emailverificationcode WHERE emailverificationcode.userId = ? AND emailverificationcode.roleId = ? AND emailverificationcode.authOtp = ?   AND emailverificationcode.createdDateTime >  DATE_SUB(NOW(), INTERVAL 1 DAY);"
-      , [userId, roleId, otp],
+      "SELECT emailverificationcode.* FROM emailverificationcode,login WHERE emailverificationcode.userId = login.userId AND emailverificationcode.roleId = login.roleId AND login.hashEmail= ? AND emailverificationcode.authOtp = ?   AND emailverificationcode.createdDateTime >  DATE_SUB(NOW(), INTERVAL 1 DAY);"
+      , [hashedEmail, otp],
       (error, results, fields) => {
         if (error) {
           callBack(error);
