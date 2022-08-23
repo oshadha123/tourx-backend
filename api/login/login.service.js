@@ -17,7 +17,7 @@ module.exports = {
     var query ="";
     switch(roleId){
       case 1:
-        query = "SELECT * FROM `admin` join usercontact on usercontact.userId=admin.userId WHERE admin.userId = ?";
+        query = "SELECT * FROM `admin` WHERE admin.userId = ?";
         pool.query(
           query,
           [userId],
@@ -45,7 +45,7 @@ module.exports = {
         );
         break;
       case 3:
-        query = "SELECT * FROM `tourist` join usercontact on usercontact.userId=tourist.userId WHERE tourist.userId = ?";
+        query = "SELECT * FROM `tourist` WHERE tourist.userId = ?";
         pool.query(
           query,
           [userId],

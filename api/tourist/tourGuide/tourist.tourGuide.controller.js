@@ -20,7 +20,7 @@ module.exports = {
                 data.push(element)
             });
             return res.json({
-                success: 0,
+                success: 1,
                 data: data
             });
         })
