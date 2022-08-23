@@ -8,7 +8,7 @@ const {
   updateUsers,
   deleteUser
 } = require("./user.controller");
-router.get("/", checkToken, getUsers);
+router.get("/", checkToken, getUsers); // edit karapm - checkToken > checkTourGuide
 router.post("/", checkToken, createUser);
 router.get("/:id", checkToken, getUserByUserId);
 router.post("/login", login);
