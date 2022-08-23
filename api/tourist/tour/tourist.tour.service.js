@@ -14,7 +14,7 @@ module.exports = {
   },
   getTempTours: (callBack) => {
     pool.query(
-      `select * from touristattraction join photo on touristattraction.attractionId=photo.attractionId join tour on tour.tourId=photo.tourId join village on village.villageId=touristattraction.villageId;`,
+      `select * from touristattraction join photo on touristattraction.attractionId=photo.attractionId join tour on tour.tourId=photo.tourId join village on village.villageId=touristattraction.villageId JOIN tourguide ON tourguide.userId=tour.guideId;`,
       [],
       (error, results, fields) => {
         if (error) {
@@ -53,6 +53,17 @@ module.exports = {
   getSelfFavourite: (userId, callBack) => {
     pool.query(
       "SELECT touristFavouriteType.typeId FROM touristFavouriteType WHERE touristFavouriteType.touristId=?", [userId],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        return callBack(null, results);
+      }
+    );
+  },
+  getTourForAttraction: (attractionId, callBack) => {
+    pool.query(
+      "SELECT tour.tourId,tour.tourName,tour.description,tourguide.firstName,tourguide.lastName,tourguide.profilePicture FROM tour,tourguide,photo WHERE photo.attractionId= ? AND tour.tourId=photo.tourId AND tour.guideId=tourguide.userId", [attractionId],
       (error, results, fields) => {
         if (error) {
           callBack(error);
