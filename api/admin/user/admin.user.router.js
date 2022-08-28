@@ -1,9 +1,11 @@
 const router = require("express").Router();
 
-// const { checkTourist } = require("../../../auth/token_validation");
-// const {getAllAttraction} = require("./tourist.attractionPlace.controller");
+const { checkAdmin } = require("../../../auth/token_validation");
+const {getAlltourist,getAlltourGuideFiltered,getAlltouristFiltered} = require("./admin.user.controller");
 
-// router.get("/attraction", getAllAttraction);
-// // router.get("/attraction/:location",checkTourist, getAttractionByLocation);
+router.get("/user/tourist",checkAdmin, getAlltourist);
+router.get("/user/tourist/ordered/:field",checkAdmin, getAlltouristFiltered);
+router.get("/user/tourist/ordered/:field/:way",checkAdmin, getAlltouristFiltered);
+router.get("/user/tourguide/ordered/:field/:way",checkAdmin, getAlltourGuideFiltered);
 
 module.exports = router;
