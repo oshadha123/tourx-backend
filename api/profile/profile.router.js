@@ -1,8 +1,9 @@
 const router = require("express").Router();
 
-// const { checkTourist } = require("../../../auth/token_validation");
-// const {getTourGuide} = require("./tourist.tourGuide.controller");
+const { checkToken } = require("../../auth/token_validation");
+const {getProfile,updateProfile} = require("./profile.controller");
 
-// router.patch("/profile",getTourGuide);
+router.get("/profile",checkToken,getProfile);
+router.patch("/profile",checkToken,updateProfile);
 
 module.exports = router;

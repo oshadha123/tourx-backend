@@ -40,32 +40,65 @@ const { sign } = require("jsonwebtoken");
                 expiresIn: "1h"
               });
               if (Object.keys(result).length === 0) {
-                return res.json({
-                  success: 1,
-                  message: "login successfully",
-                  firstName :results.firstName,
-                  lastName :results.lastName,
-                  userId:results.userId,
-                  profilePicture : results.profilePicture,
-                  points:results.points,
-                  role : userRole,
-                  verified : verified,
-                  token: jsontoken
-                });
+                if (userRole == 2 || userRole ==3){
+                  return res.json({
+                    success: 1,
+                    message: "login successfully",
+                    firstName :results.firstName,
+                    lastName :results.lastName,
+                    userId:results.userId,
+                    profilePicture : results.profilePicture,
+                    bio : results.bio,
+                    points:results.points,
+                    role : userRole,
+                    verified : verified,
+                    token: jsontoken
+                  });
+                }else{
+                  return res.json({
+                    success: 1,
+                    message: "login successfully",
+                    firstName :results.firstName,
+                    lastName :results.lastName,
+                    userId:results.userId,
+                    profilePicture : results.profilePicture,
+                    points:results.points,
+                    role : userRole,
+                    verified : verified,
+                    token: jsontoken
+                  });
+                }
               }else{
-                return res.json({
-                  success: 1,
-                  message: "login successfully",
-                  firstName :results.firstName,
-                  lastName :results.lastName,
-                  userId:results.userId,
-                  profilePicture : results.profilePicture,
-                  points:results.points,
-                  contact: result[0].contactNumber,
-                  role : userRole,
-                  verified : verified,
-                  token: jsontoken
-                });
+                if (userRole == 2 || userRole ==3){
+                  return res.json({
+                    success: 1,
+                    message: "login successfully",
+                    firstName :results.firstName,
+                    lastName :results.lastName,
+                    userId:results.userId,
+                    profilePicture : results.profilePicture,
+                    bio : results.bio,
+                    points:results.points,
+                    contact: result[0].contactNumber,
+                    role : userRole,
+                    verified : verified,
+                    token: jsontoken
+                  });
+                }else{
+                  return res.json({
+                    success: 1,
+                    message: "login successfully",
+                    firstName :results.firstName,
+                    lastName :results.lastName,
+                    userId:results.userId,
+                    profilePicture : results.profilePicture,
+                    points:results.points,
+                    contact: result[0].contactNumber,
+                    role : userRole,
+                    verified : verified,
+                    token: jsontoken
+                  });
+                }
               }
 
             })
