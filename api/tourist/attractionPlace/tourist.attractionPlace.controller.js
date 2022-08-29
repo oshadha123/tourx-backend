@@ -35,7 +35,8 @@ module.exports = {
                         }
                         results[index].coverPhoto = result[0].path
                     },(err, results) => {
-                        return res.json(results)
+                        return res.json({
+                            success: 1,data:results})
                     });
                 });
             });
