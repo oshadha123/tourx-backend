@@ -16,7 +16,6 @@ module.exports = {
                 });
             } 
             result.forEach((element, i) => {
-                console.log(element)
                 result[i].date = element.date.toDateString();
                 if(result[i].userType=="tourist"){
                     output.tourist.push(result[i])
