@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const {
-    getProfileDetails,getContactDetails,updateProfile
+    getProfileDetails,getContactDetails,updateProfile,deactivateProfile,addContact,updateContact
 } = require("./profile.service");
 
 module.exports = {
@@ -60,6 +60,35 @@ module.exports = {
             });
         });
     },
+    deactivateProfile:(req, res) => {
+        let token = req.get("authorization");
+        token = token.slice(7);
+        jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
+            const userId = decoded.userId
+            const roleId = decoded.role
+            if(roleId==1){
+                return res.json({
+                    success: 0,
+                    data: "Error,Unsupported account type."
+                });
+            }
+            deactivateProfile(userId,roleId,(err, result) => {
+                if (err) {
+                    console.log(err);
+                }
+                if (!result) {
+                    return res.json({
+                        success: 0,
+                        data: "error, something went wrong."
+                    });
+                }
+                return res.json({
+                    success: 1,
+                    data: "Success,Profile successfully deactivated."
+                });
+            })
+        });
+    },
     updateProfile: (req, res) => {
         let token = req.get("authorization");
         token = token.slice(7);
@@ -112,5 +141,123 @@ module.exports = {
                 }); 
             });
         });
+    },
+    addContactDetails: (req, res) => {
+        let token = req.get("authorization");
+        token = token.slice(7);
+        jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
+            const userId = decoded.userId
+            const roleId = decoded.role
+            const body = req.body
+            if(!body.contact){
+                return res.json({
+                    success: 0,
+                    data: "Error,Empty data set received."
+                });
+            }
+            if(body.contact.length==0){
+                return res.json({
+                    success: 0,
+                    data: "Error,Empty data set received."
+                });
+            }
+            if(body.contact[0].length!=10){
+                return res.json({
+                    success: 0,
+                    data: "Error,Invalid telephone number length."
+                });
+            }
+            getContactDetails(userId,roleId,null,(err, result) => {
+                if (err) {
+                    console.log(err);
+                }
+                if (!result) {
+                    return res.json({
+                        success: 0,
+                        data: "error, something went wrong."
+                    });
+                }
+                if(result.length>0){
+                    return res.json({
+                        success: 0,
+                        data: "error, Update contact details."
+                    });
+                }
+                addContact(userId,roleId,body.contact[0],(err, result)=>{
+                    if (err) {
+                        console.log(err);
+                    }
+                    if (!result) {
+                        return res.json({
+                            success: 0,
+                            data: "error, something went wrong."
+                        });
+                    }
+                    return res.json({
+                        success: 1,
+                        data: "Success, Contact details successfully added."
+                    });
+                });
+            })
+        })
+    },
+    updateContactDetails: (req, res) => {
+        let token = req.get("authorization");
+        token = token.slice(7);
+        jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
+            const userId = decoded.userId
+            const roleId = decoded.role
+            const body = req.body
+            if(!body.contact){
+                return res.json({
+                    success: 0,
+                    data: "Error,Empty data set received."
+                });
+            }
+            if(body.contact.length==0){
+                return res.json({
+                    success: 0,
+                    data: "Error,Empty data set received."
+                });
+            }
+            if(body.contact[0].length!=10){
+                return res.json({
+                    success: 0,
+                    data: "Error,Invalid telephone number length."
+                });
+            }
+            getContactDetails(userId,roleId,null,(err, result) => {
+                if (err) {
+                    console.log(err);
+                }
+                if (!result) {
+                    return res.json({
+                        success: 0,
+                        data: "error, something went wrong."
+                    });
+                }
+                if(result.length==0){
+                    return res.json({
+                        success: 0,
+                        data: "error, Unable to find existing data.Please add contact details."
+                    });
+                }
+                updateContact(userId,roleId,body.contact[0],(err, result)=>{
+                    if (err) {
+                        console.log(err);
+                    }
+                    if (!result) {
+                        return res.json({
+                            success: 0,
+                            data: "error, something went wrong."
+                        });
+                    }
+                    return res.json({
+                        success: 1,
+                        data: "Success, Contact details successfully updated."
+                    });
+                });
+            })
+        })
     }
 }

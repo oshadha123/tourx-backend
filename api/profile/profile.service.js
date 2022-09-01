@@ -35,5 +35,41 @@ module.exports = {
           return callBack(null, results);
         }
       );
+    },
+    addContact:(userId,roleId,contact,callBack)=>{
+      pool.query(
+        "INSERT INTO usercontact VALUES (?,?,?)",
+        [userId,roleId,contact],
+        (error, results, fields) => {
+          if (error) {
+            callBack(error);
+          }
+          return callBack(null, results);
+        }
+      );
+    },
+    updateContact:(userId,roleId,contact,callBack)=>{
+      pool.query(
+        "UPDATE usercontact SET contactNumber=? WHERE userId=? AND roleId=?;",
+        [contact,userId,roleId],
+        (error, results, fields) => {
+          if (error) {
+            callBack(error);
+          }
+          return callBack(null, results);
+        }
+      );
+    },
+    deactivateProfile:(userId,roleId,callBack)=>{
+      pool.query(
+        "UPDATE login SET login.accountState=0 WHERE login.userId=? AND login.roleId=?;",
+        [userId,roleId],
+        (error, results, fields) => {
+          if (error) {
+            callBack(error);
+          }
+          return callBack(null, results);
+        }
+      );
     }
 }
