@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const {
-    getProfileDetails,getContactDetails,updateProfile,deactivateProfile,addContact,updateContact
+    getProfileDetails,getContactDetails,updateProfile,deactivateProfile,addContact,updateContact,checkBanned
 } = require("./profile.service");
 
 module.exports = {
@@ -167,35 +167,58 @@ module.exports = {
                     data: "Error,Invalid telephone number length."
                 });
             }
-            getContactDetails(userId,roleId,null,(err, result) => {
+            checkBanned(body.contact[0],(err, result) => {
                 if (err) {
                     console.log(err);
                 }
-                if (!result) {
+                if (result) {
                     return res.json({
                         success: 0,
-                        data: "error, something went wrong."
+                        data: "error, Banned telephone number."
                     });
                 }
-                if(result.length>0){
-                    return res.json({
-                        success: 0,
-                        data: "error, Update contact details."
-                    });
-                }
-                addContact(userId,roleId,body.contact[0],(err, result)=>{
+                checkAvailability(body.contact[0],(err, result) => {
                     if (err) {
                         console.log(err);
                     }
-                    if (!result) {
+                    if (result) {
                         return res.json({
                             success: 0,
-                            data: "error, something went wrong."
+                            data: "error, Telephone number already in use."
                         });
                     }
-                    return res.json({
-                        success: 1,
-                        data: "Success, Contact details successfully added."
+                    getContactDetails(userId,roleId,null,(err, result) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        if (!result) {
+                            return res.json({
+                                success: 0,
+                                data: "error, something went wrong."
+                            });
+                        }
+                        if(result.length>0){
+                            return res.json({
+                                success: 0,
+                                data: "error, Try to update existing number."
+                            });
+                        }
+
+                        addContact(userId,roleId,body.contact[0],(err, result)=>{
+                            if (err) {
+                                console.log(err);
+                            }
+                            if (!result) {
+                                return res.json({
+                                    success: 0,
+                                    data: "error, something went wrong."
+                                });
+                            }
+                            return res.json({
+                                success: 1,
+                                data: "Success, Contact details successfully added."
+                            });
+                        });
                     });
                 });
             })
@@ -226,38 +249,60 @@ module.exports = {
                     data: "Error,Invalid telephone number length."
                 });
             }
-            getContactDetails(userId,roleId,null,(err, result) => {
+            checkBanned(body.contact[0],(err, result) => {
                 if (err) {
                     console.log(err);
                 }
-                if (!result) {
+                if (result) {
                     return res.json({
                         success: 0,
-                        data: "error, something went wrong."
+                        data: "error, Banned telephone number."
                     });
                 }
-                if(result.length==0){
-                    return res.json({
-                        success: 0,
-                        data: "error, Unable to find existing data.Please add contact details."
-                    });
-                }
-                updateContact(userId,roleId,body.contact[0],(err, result)=>{
+                checkAvailability(body.contact[0],(err, result) => {
                     if (err) {
                         console.log(err);
                     }
-                    if (!result) {
+                    if (result) {
                         return res.json({
                             success: 0,
-                            data: "error, something went wrong."
+                            data: "error, Telephone number already in use."
                         });
                     }
-                    return res.json({
-                        success: 1,
-                        data: "Success, Contact details successfully updated."
-                    });
+                    getContactDetails(userId,roleId,null,(err, result) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        if (!result) {
+                            return res.json({
+                                success: 0,
+                                data: "error, something went wrong."
+                            });
+                        }
+                        if(result.length==0){
+                            return res.json({
+                                success: 0,
+                                data: "error, Unable to find existing data.Please add contact details."
+                            });
+                        }
+                        updateContact(userId,roleId,body.contact[0],(err, result)=>{
+                            if (err) {
+                                console.log(err);
+                            }
+                            if (!result) {
+                                return res.json({
+                                    success: 0,
+                                    data: "error, something went wrong."
+                                });
+                            }
+                            return res.json({
+                                success: 1,
+                                data: "Success, Contact details successfully updated."
+                            });
+                        });
+                    })
                 });
-            })
+            });
         })
     }
 }

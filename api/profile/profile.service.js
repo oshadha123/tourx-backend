@@ -71,5 +71,32 @@ module.exports = {
           return callBack(null, results);
         }
       );
+    },
+    checkBanned:(telephoneNum) => {
+      telephoneNum = telephoneNum.split("-").slice(0,).join("");
+      const omittedZero = telephoneNum.split(1);
+      pool.query(
+        "SELECT * FROM banned_telephone_numbers WHERE telephoneNumbers=? OR telephoneNumbers=?",
+        [telephoneNum,omittedZero],
+        (error, results, fields) => {
+          if (error) {
+            callBack(error);
+          }
+          return callBack(null, results);
+        }
+      );
+    },
+    checkAvailability:(telephoneNum)=>{
+      telephoneNum = telephoneNum.split("-").slice(0,).join("");
+      pool.query(
+        "SELECT * FROM usercontact WHERE usercontact.contactNumber=?",
+        [telephoneNum],
+        (error, results, fields) => {
+          if (error) {
+            callBack(error);
+          }
+          return callBack(null, results);
+        }
+      );
     }
 }

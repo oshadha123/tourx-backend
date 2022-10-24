@@ -82,7 +82,7 @@ module.exports = {
                 });
             }
             return res.json({
-                success: 0,
+                success: 1,
                 data: results
             });
         });
