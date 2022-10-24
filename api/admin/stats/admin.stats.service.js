@@ -36,5 +36,17 @@ module.exports = {
           return callBack(null, results);
         }
       );
+    },
+    countReportedAccount: (callBack) => {
+      pool.query(
+        "SET @count = (SELECT rulehandle.value FROM rulehandle WHERE rulehandle.ruleId=4 AND rulehandle.startDateTime < NOW() AND rulehandle.endDateTime > NOW() ORDER BY rulehandle.startDateTime DESC);SELECT COUNT(c) AS `count` FROM (SELECT COUNT(userId) c FROM userReporting WHERE userReporting.activeState=1 GROUP BY roleId,userId HAVING c >= @count) temp;",
+        [],
+        (error, results, fields) => {
+          if (error) {
+            callBack(error);
+          }
+          return callBack(null, results[1]);
+        }
+      );
     }
 }
