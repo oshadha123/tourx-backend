@@ -10,6 +10,12 @@ const { sign } = require("jsonwebtoken");
   module.exports = {
     login: (req, res) => {
       const body = req.body;
+      if(body.email === undefined || body.password === undefined){
+        return res.json({
+          success: 0,
+          data: "Unable to trieve email and password"
+        });
+      }
       body.email = crypto.createHash('md5').update(body.email.toLowerCase()).digest('hex');
       body.password = crypto.createHash('md5').update(body.password).digest('hex');
 

@@ -8,9 +8,14 @@ async function createIntent(amount,callBack) {
     const paymentIntent = await stripe.paymentIntents.create({
         amount: amount,
         currency: 'usd',
-    });
+    },);
     return callBack(null,paymentIntent);
 }
+
+async function statusOfPayment(customerIntent){
+
+}
+
 module.exports = {
     getPaymentIntent:(req,res)=>{
         const duration = req.params.duration;
@@ -26,9 +31,20 @@ module.exports = {
                 const clientSecret = paymentIntent.client_secret
                 return res.json({
                     success: 1,
-                    data: clientSecret
+                    data: {"secret":clientSecret}
                 });
             });
         });
+    },
+    validatePayment:(req,res)=>{
+        if (req.body.paymentIntent === undefined || req.body.paymentState === undefined){
+            return res.json({
+                success: 0,
+                data: "Unable to trieve data"
+            });
+        }
+        const paymentIntent = req.body.paymentIntent;
+        const paymentState = req.body.paymentState;
+
     }
 }
