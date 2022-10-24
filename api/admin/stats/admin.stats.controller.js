@@ -98,7 +98,7 @@ module.exports = {
                     data: "error, something went wrong."
                 });
             }
-            console.log(result)
+            //console.log(result)
             const value1 = result[0].count
             const value2 = result[1].count 
             return res.json({
