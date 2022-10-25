@@ -5,7 +5,10 @@ const {
 
 module.exports = {
     // getTours: (req, res) => {
-    //     let token = req.get("authorization");
+    //             let token = req.get("authorization");
+            // if (token === undefined){
+            //     token = req.get("Authorization");
+            // }
     //     token = token.slice(7);
     //     jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
     //         const userId = decoded.userId
