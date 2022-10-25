@@ -11,7 +11,7 @@ module.exports = {
               }
               return callBack(null, results);
             }
-          );
+        );
     },
     getContactDetails:(userId, roleId,results,callBack) =>{
         pool.query(
