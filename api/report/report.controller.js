@@ -15,6 +15,7 @@ module.exports = {
         const accountId = body.accountId
         const reason = body.reason
         const roleId = body.roleId
+        const description = body.description
         var table=""
         if(reason < 1 || reason > 3){
             return res.json({
@@ -46,7 +47,7 @@ module.exports = {
                     data: "error, unable to find the user."
                 });
             }
-            reportUser(accountId,roleId,reason,(err, result)=>{
+            reportUser(accountId,roleId,reason,description,(err, result)=>{
                 if (err) {
                     console.log(err);
                 }

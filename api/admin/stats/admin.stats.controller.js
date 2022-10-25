@@ -1,7 +1,8 @@
 const {
     getUserStats,
     countUsers,
-    countAccountType
+    countAccountType,
+    countReportedAccount,
 } = require("./admin.stats.service");
 
 module.exports = {
@@ -73,10 +74,7 @@ module.exports = {
             const verified = result[0][0].verified;
             const unverified = result[1][0].unverified;
             const deactivated = result[2][0].deactivated;
-            console.log(result)
-            console.log(verified)
-            console.log(unverified)
-            console.log(deactivated)
+
             return res.json({
                 success: 1,
                 data: {
@@ -98,7 +96,7 @@ module.exports = {
                     data: "error, something went wrong."
                 });
             }
-            //console.log(result)
+
             const value1 = result[0].count
             const value2 = result[1].count 
             return res.json({
@@ -109,5 +107,26 @@ module.exports = {
                 }
             });
         })
+    },
+    getNewReportedAccountCount:(req, res) => {
+        countReportedAccount((err, result)=>{
+            if (err) {
+                console.log(err);
+            }
+            if (!result) {
+                return res.json({
+                    success: 0,
+                    data: "error, something went wrong."
+                });
+            }
+
+            const count = result[0].count
+            return res.json({
+                success: 1,
+                data: {
+                    "count":count
+                }
+            });
+        });
     }
 }
