@@ -13,10 +13,10 @@ module.exports = {
             }
         )
     },
-    reportUser: (userId,roleId,reason,callBack) => {
+    reportUser: (userId,roleId,reason,description,callBack) => {
         pool.query(
-            "INSERT INTO userReporting(userId,roleId,reason) VALUES (?,?,?)",
-            [userId,roleId,reason],
+            "INSERT INTO userReporting(userId,roleId,reason,description) VALUES (?,?,?,?)",
+            [userId,roleId,reason,description],
             (error, results, fields) => {
                 if (error) {
                     callBack(error);
