@@ -23,6 +23,9 @@ module.exports = {
     },
     getMyFavouriteType: (req, res) => {
         let token = req.get("authorization");
+        if (token === undefined){
+            token = req.get("Authorization");
+        }
         token = token.slice(7);
         jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
             getSelfFavourite(decoded.userId, (err, results) => {

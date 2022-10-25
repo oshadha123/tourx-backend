@@ -7,6 +7,10 @@ const {
 module.exports = {
     getAllAttraction: (req, res) => {
         let token = req.get("authorization");
+        if (token === undefined){
+            token = req.get("Authorization");
+        }
+        //console.log(req)
         token = token.slice(7);
         jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
             const userId = decoded.userId
@@ -33,7 +37,11 @@ module.exports = {
                                 data: "error, something went wrong."
                             });
                         }
-                        results[index].coverPhoto = result[0].path
+                        console.log(result[0])
+                        if(result[0].path !== undefined){
+                            results[index].coverPhoto = result[0].path
+                        }
+                
                     },(err, results) => {
                         return res.json({
                             success: 1,data:results})

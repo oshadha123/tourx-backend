@@ -31,6 +31,14 @@ const { sign } = require("jsonwebtoken");
         } 
         const userRole = results.roleId;
         const verified = results.verificationStatus;
+        const accountState = results.accountState;
+        if(accountState == 2){
+          return res.json({
+            success: 0,
+            data: "This user has been banned from the system."
+          });
+        }
+
         getUserDetails(results.userId, userRole, (err,results) => {
             getUserContact(results.userId, userRole,results,(err,result) => {
               if (err) {

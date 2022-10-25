@@ -7,6 +7,9 @@ const {
 module.exports = {
     getProfile: (req, res) => {
         let token = req.get("authorization");
+        if (token === undefined){
+            token = req.get("Authorization");
+        }
         token = token.slice(7);
         jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
             const userId = decoded.userId
@@ -62,6 +65,9 @@ module.exports = {
     },
     deactivateProfile:(req, res) => {
         let token = req.get("authorization");
+        if (token === undefined){
+            token = req.get("Authorization");
+        }
         token = token.slice(7);
         jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
             const userId = decoded.userId
@@ -91,6 +97,9 @@ module.exports = {
     },
     updateProfile: (req, res) => {
         let token = req.get("authorization");
+        if (token === undefined){
+            token = req.get("Authorization");
+        }
         token = token.slice(7);
         jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
             const userId = decoded.userId
@@ -144,6 +153,9 @@ module.exports = {
     },
     addContactDetails: (req, res) => {
         let token = req.get("authorization");
+        if (token === undefined){
+            token = req.get("Authorization");
+        }
         token = token.slice(7);
         jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
             const userId = decoded.userId
@@ -226,6 +238,9 @@ module.exports = {
     },
     updateContactDetails: (req, res) => {
         let token = req.get("authorization");
+        if (token === undefined){
+            token = req.get("Authorization");
+        }
         token = token.slice(7);
         jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
             const userId = decoded.userId
