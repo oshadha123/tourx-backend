@@ -13,6 +13,7 @@ const adminRoutes = require('./api/admin/admin.router')
 const profile = require('./api/profile/profile.router')
 const payment = require('./api/payment/payment.router')
 const report = require('./api/report/report.router')
+const travel = require('./api/travel/travel.router')
 
 app.use(cors())
 app.use(express.json());
@@ -27,6 +28,7 @@ app.use("/api/v1", touristRoutes);
 app.use("/api/v1", adminRoutes);
 app.use("/api/v1", payment);
 app.use("/api/v1", report);
+app.use("/api/v1", travel);
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
