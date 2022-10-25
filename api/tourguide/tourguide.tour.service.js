@@ -24,5 +24,16 @@ module.exports = {
               return callBack(null, results);
             }
           );
+    },
+    updateAttractionType:(data, callBack) => {
+        pool.query(
+            "INSERT IGNORE  INTO touristattractiontypeF VALUES ?;", [data],
+            (error, results, fields) => {
+              if (error) {
+                callBack(error);
+              }
+              return callBack(null, 1);
+            }
+          );
     }
 }
