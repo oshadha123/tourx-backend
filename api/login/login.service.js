@@ -3,7 +3,7 @@ const pool = require("../../config/database");
 module.exports = {
   searchDbForEmailPassword: (email , password, callBack) => {
     pool.query(
-      "SELECT userId,roleId,verificationStatus  FROM `login` WHERE hashEmail= ? AND `password`= ?",
+      "SELECT userId,roleId,verificationStatus,accountState FROM `login` WHERE hashEmail= ? AND `password`= ? ",
       [email,password],
       (error, results, fields) => {
         if (error) {
