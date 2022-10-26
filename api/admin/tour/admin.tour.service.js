@@ -15,7 +15,7 @@ module.exports = {
     },
     approveTour:(tourId,callBack) => {
         pool.query(
-            "UPDATE `tour` SET tour.approvalStatus = 'y' WHERE tour.tourId = ?",
+            "UPDATE `tour` SET tour.approvalStatus = 'y', tour.approvedTimestamp= CURRENT_TIMESTAMP WHERE tour.tourId = ?",
             [tourId],
             (error, results, fields) => {
                 if (error) {
@@ -27,7 +27,7 @@ module.exports = {
     },
     rejectTour:(tourId,callBack) => {
         pool.query(
-            "UPDATE `tour` SET tour.approvalStatus = 'r' WHERE tour.tourId = ?",
+            "UPDATE `tour` SET tour.approvalStatus = 'r' , tour.approvedTimestamp= CURRENT_TIMESTAMP WHERE tour.tourId = ?",
             [tourId],
             (error, results, fields) => {
                 if (error) {
