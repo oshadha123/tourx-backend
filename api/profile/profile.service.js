@@ -13,6 +13,18 @@ module.exports = {
             }
         );
     },
+    checkPremium:(userId,results,callBack)=>{
+      pool.query(
+        "SELECT CASE WHEN tourguideaccount.endDate > NOW() THEN 1 ELSE 0 END AS `premium`, tourguideaccount.datePurchased,tourguideaccount.endDate FROM tourguideaccount WHERE tourguideaccount.userId=? ORDER BY tourguideaccount.recordId DESC LIMIT 1",
+        [userId],
+        (error, results, fields) => {
+          if (error) {
+            callBack(error);
+          }
+          return callBack(null, results);
+        }
+      );
+    },
     getContactDetails:(userId, roleId,results,callBack) =>{
         pool.query(
             "SELECT * FROM `usercontact` WHERE userId = ? AND roleId = ?",

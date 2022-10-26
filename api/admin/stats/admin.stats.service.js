@@ -48,5 +48,17 @@ module.exports = {
           return callBack(null, results[1]);
         }
       );
+    },
+    countReceiveTours:(callBack) => {
+      pool.query(
+        "SELECT COUNT(tourId) AS `count`, approvalStatus FROM tour GROUP BY approvalStatus ORDER BY approvalStatus;",
+        [],
+        (error, results, fields) => {
+          if (error) {
+            callBack(error);
+          }
+          return callBack(null, results);
+        }
+      );
     }
 }

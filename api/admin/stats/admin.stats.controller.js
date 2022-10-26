@@ -3,6 +3,7 @@ const {
     countUsers,
     countAccountType,
     countReportedAccount,
+    countReceiveTours
 } = require("./admin.stats.service");
 
 module.exports = {
@@ -126,6 +127,33 @@ module.exports = {
                 data: {
                     "count":count
                 }
+            });
+        });
+    },
+    getTourCount:(req, res) => {
+        countReceiveTours((err, result)=>{
+            if (err) {
+                console.log(err);
+            }
+            if (!result) {
+                return res.json({
+                    "success": 0,
+                    "data": "error, something went wrong."
+                });
+            }
+            var output = {'total':0,'new':0,'rejected':0}
+            result.forEach((element) => {
+                if(element.approvalStatus =='y'){
+                    output.total = element.count
+                }else if(element.approvalStatus =='n'){
+                    output.new = element.count
+                }else {
+                    output.rejected = element.count
+                }
+            })
+            return res.json({
+                "success": 1,
+                "data":output
             });
         });
     }
