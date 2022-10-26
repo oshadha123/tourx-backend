@@ -3,7 +3,7 @@ const pool = require("../../../config/database");
 module.exports = {
     getAllTour:(callBack) => {
         pool.query(
-            "SELECT * FROM `tour` WHERE tour.approvalStatus = 'n'",
+            "SELECT tour.*, city.cityName, touristattraction.attractionId,touristattraction.attractionName,photo.path FROM tour,city,touristattraction,photo WHERE tour.approvalStatus = 'n' AND tour.tourId=photo.tourId AND photo.attractionId= touristattraction.attractionId AND tour.start=city.cityName;",
             [],
             (error, results, fields) => {
                 if (error) {
