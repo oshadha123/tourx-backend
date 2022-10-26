@@ -35,5 +35,17 @@ module.exports = {
               return callBack(null, 1);
             }
           );
+    },
+    addAttractionPlace:(attractionName,longitude,latitude,villageId,callBack)=>{
+      pool.query(
+        "INSERT INTO touristattraction(attractionName,longitude,latitude,villageId) VALUES (?,?,?,?);SELECT LAST_INSERT_ID();", 
+        [attractionName,longitude,latitude,villageId],
+        (error, results, fields) => {
+          if (error) {
+            callBack(error);
+          }
+          return callBack(null, 1);
+        }
+      );
     }
 }
