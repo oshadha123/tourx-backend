@@ -7,6 +7,7 @@ const loginRouter = require("./api/login/login.router");
 const userRegister = require("./api/register/register.router");
 const forgotRouter = require("./api/forgotPassword/forgot.router");
 const getLeaderBoard = require("./api/tourguide/tourguide.home.router")
+const addTour = require("./api/tourguide/tourguide.tour.router")
 const getYourTours = require('./api/tourguide/tourguide.home.router')
 const touristRoutes = require('./api/tourist/tourist.router')
 const adminRoutes = require('./api/admin/admin.router')
@@ -29,6 +30,7 @@ app.use("/api/v1", adminRoutes);
 app.use("/api/v1", payment);
 app.use("/api/v1", report);
 app.use("/api/v1", travel);
+app.use("/api/v1", addTour);
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
