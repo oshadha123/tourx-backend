@@ -12,9 +12,21 @@ module.exports = {
       }
     );
   },
-  getTempTours: (callBack) => {
+  getTempAttraction: (callBack) => {
     pool.query(
       `select * from touristattraction join photo on touristattraction.attractionId=photo.attractionId join tour on tour.tourId=photo.tourId join village on village.villageId=touristattraction.villageId JOIN tourguide ON tourguide.userId=tour.guideId;`,
+      [],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        return callBack(null, results);
+      }
+    );
+  },
+  getTempTours:(callBack) => {
+    pool.query(
+      ``,
       [],
       (error, results, fields) => {
         if (error) {

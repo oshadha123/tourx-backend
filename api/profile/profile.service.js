@@ -11,7 +11,7 @@ module.exports = {
               }
               return callBack(null, results);
             }
-          );
+        );
     },
     getContactDetails:(userId, roleId,results,callBack) =>{
         pool.query(
@@ -72,7 +72,7 @@ module.exports = {
         }
       );
     },
-    checkBanned:(telephoneNum) => {
+    checkBanned:(telephoneNum,callBack) => {
       telephoneNum = telephoneNum.split("-").slice(0,).join("");
       const omittedZero = telephoneNum.split(1);
       pool.query(
@@ -86,7 +86,7 @@ module.exports = {
         }
       );
     },
-    checkAvailability:(telephoneNum)=>{
+    checkAvailability:(telephoneNum,callBack)=>{
       telephoneNum = telephoneNum.split("-").slice(0,).join("");
       pool.query(
         "SELECT * FROM usercontact WHERE usercontact.contactNumber=?",

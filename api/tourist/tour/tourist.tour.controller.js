@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const {
-    getTours, getPhoto, getTempTours, getTourForAttraction
+    getTours, getPhoto, getTempTours, getTourForAttraction,getTempAttraction
 } = require("./tourist.tour.service");
 
 module.exports = {
@@ -48,7 +48,7 @@ module.exports = {
     //     })
     // },
     getTours: (req, res) => {
-        getTempTours((err, results) => {
+        getTempAttraction((err, results) => {
             if (err) {
                 console.log(err);
                 return;
