@@ -68,7 +68,7 @@ module.exports = {
   },
   updateLoginDetails: (userId, roleId, email, hashEmail, password, verificationStatus, callBack) => {
     pool.query(
-      "INSERT INTO `login` VALUES (?,?,?,?,?,?)"
+      "INSERT INTO `login` VALUES (?,?,?,?,?,?,0,1)"
       , [userId, roleId, email, hashEmail, password, verificationStatus],
       (error, results, fields) => {
         if (error) {
